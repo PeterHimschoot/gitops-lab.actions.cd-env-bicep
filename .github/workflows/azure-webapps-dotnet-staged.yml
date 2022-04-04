@@ -1,0 +1,36 @@
+name: Deploy-Staged-WebApp
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - templates/webapp.bicep
+      - .github/workflows/azure-webapps-dotnet-staged.yml
+  workflow_dispatch:
+      
+env:
+  AZURE_RG: github-actions-staged
+  AZURE_SUBSCRIPTION: <<REPLACE>>
+  AZURE-LOCATION: westeurope
+
+jobs:
+  RG_Job:
+    runs-on: ubuntu-latest
+    steps:
+       name: Setup
+        run: echo Prepare resource group
+
+  Dev-Job:
+    runs-on: ubuntu-latest
+    steps:
+       name: Run on DEV
+        run: echo Hello, DEV!
+
+  Prod-Job:
+    runs-on: ubuntu-latest
+    env: 
+      AZURE-WEBAPP-NAME: mywebapp-prod
+    steps:
+       name: Run on PROD
+        run: echo Hello, PROD!
